@@ -8,6 +8,7 @@ import os
 import logging
 import json
 from parser import PDFParser
+from llm_summarizer import LLMSummarizer
 
 
 if __name__ == '__main__':
@@ -45,7 +46,7 @@ if __name__ == '__main__':
     images = parser.images
     for image in images:
         # 将图像保存为文件
-        image_filename = f"/Users/kaichen/workspace/pdf_parsing/pdf_parsing/temp/image/image_{image.page_num}_{image.title[:10]}.png"
+        image_filename = f"{ROOT_DIR[:-3]}/temp/image/image_{image.page_num}_{image.title[:10]}.png"
         with open(image_filename, "wb") as image_file:
             logging.info(image.title)
             logging.info(image.page_num)
@@ -67,3 +68,9 @@ if __name__ == '__main__':
         for ref in parser.references:
             # write each item on a new line
             fp.write("%s\n" % ref.ref)
+
+    # 6 总结
+    logging.info('== summarizing (LLM) ==')
+    llm_summarizer = LLMSummarizer()
+    parser.text.summary = llm_summarizer.summarize(pdf_path)
+    logging.info(parser.text.summary)

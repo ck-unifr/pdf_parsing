@@ -4,15 +4,14 @@
 # 日期：2023-09
 # 描述：这个脚本的目的是解析PDF。将PDF结构化成，文字，图片，表格和参考。
 
-from typing import List
-import PyPDF2  # PDF相关操作
-import fitz   # PyMuPDF PDF相关操作
 import pandas as pd  # 用于结构化表格
-# import tabula  # 用于提取 PDF 中的表格数据
+import fitz   # PyMuPDF PDF相关操作
+import PyPDF2  # PDF相关操作
+from typing import List
 
 
 class Text:
-    def __init__(self, title: str = None, section: dict = {}):
+    def __init__(self, title: str = None, section: dict = {}, summary: str = None):
         """
         文本类，用于封装提取的文本内容
 
@@ -22,6 +21,7 @@ class Text:
         """
         self.title = title
         self.section = section
+        self.summary = summary
 
 
 class PDFImage:
