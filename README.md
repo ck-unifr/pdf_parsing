@@ -1,5 +1,5 @@
 # PDF解析
-![Python](https://img.shields.io/badge/python-3.9-blue) ![PyPDF2](https://img.shields.io/badge/PyPDF2-3.0.1-blue) ![PyMuPDF](https://img.shields.io/badge/PyPDF2-1.23.3-blue) ![pandas](https://img.shields.io/badge/Pandas-2.1.0-blue)
+![Python](https://img.shields.io/badge/Python-3.9-blue) ![PyPDF2](https://img.shields.io/badge/PyPDF2-3.0.1-blue) ![PyMuPDF](https://img.shields.io/badge/PyPDF2-1.23.3-blue) ![pandas](https://img.shields.io/badge/Pandas-2.1.0-blue)
 
 ## 介绍
 实现对PDF解析，将给定的PDF结构化成以下几个部分。
