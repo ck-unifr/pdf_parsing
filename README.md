@@ -16,15 +16,19 @@
 并且在这个项目使用了[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)对PDF做摘要。
 
 在项目中，有以下一个主要文件：
-- src/parser.py：包含了所有 PDF 解析相关代码。
-- src/llm_summarizer.py：包含了大模型摘要相关代码。
-- src/main.py：包含了一些示例代码，展示了如何使用 src/parser.py 中的功能。
+- ```src/parser.py```：包含了所有 PDF 解析相关代码。
+- ```src/llm_summarizer.py```：包含了大模型摘要相关代码。
+- ```src/main.py```：包含了一些示例代码，展示了如何使用 ```src/parser.py``` 中的功能。
+- ```src/utils.py```: 包含了一些工具函数。
+- ```config.ini```：包含了RWKV模型文件路径和相关的tokenizer文件路径
 
 ## 使用
-具体例子请参考 src/main.py
+具体例子请参考 ```src/main.py```
 
 **初始化**
+
 首先初始化一个类并讲需要解析的PDF文件路径传入到该类。
+
 ```
 from parser import PDFParser
 
@@ -33,6 +37,7 @@ parser = PDFParser(pdf_path)
 ```
 
 **获取文字：标题，章节名称和对应的文字内容**
+
 ```
 import json
 parser.extract_text()
@@ -44,6 +49,7 @@ with open(json_file_path, 'w') as json_file:
 ```
 
 **获取图片：图片和对应的标题**
+
 ```
 parser.extract_images()
 images = parser.images
@@ -57,6 +63,7 @@ for image in images:
 ```
 
 **获取表格：表格和对应的标题**
+
 ```
 parser.extract_tables()
 for i, table in enumerate(parser.tables):
@@ -65,6 +72,7 @@ for i, table in enumerate(parser.tables):
 ```
 
 **获取参考**
+
 ```
 parser.extract_references()
 with open('/home/reference/references.txt', 'w') as fp:
@@ -73,10 +81,23 @@ with open('/home/reference/references.txt', 'w') as fp:
 ```
 
 **获取摘要**
+
 ```
 llm_summarizer = LLMSummarizer()
 summary = llm_summarizer.summarize(pdf_path)
 ```
+
+这个项目用到的是大模型是[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)，
+需要在config.ini文件中设置相关的模型文件路径和tokenizer文件路径。
+以下是config.ini的文件内容
+
+```
+[LLM]
+model_path=/data/model/rwkv_model/RWKV-4-Raven-7B-v12-Eng49%%-Chn49%%-Jpn1%%-Other1%%-20230530-ctx8192.pth
+tokenizer_path=/data/model/rwkv_model/20B_tokenizer.json
+```
+
+
 
 
 ## 总结
