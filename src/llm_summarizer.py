@@ -12,6 +12,7 @@ import os
 os.environ["RWKV_CUDA_ON"] = '1'
 os.environ["RWKV_JIT_ON"] = '1'
 
+from utils import get_config_variable
 
 class LLMSummarizer:
     """
@@ -23,8 +24,11 @@ class LLMSummarizer:
     def __init__(self):
         # @param {"type":"string"}
         self.strategy = "cuda fp16i8 *20 -> cuda fp16"
-        self.model_path = '/data/model/rwkv_model/RWKV-4-Raven-7B-v12-Eng49%-Chn49%-Jpn1%-Other1%-20230530-ctx8192.pth'
-        self.tokens_path = '/data/model/rwkv_model/20B_tokenizer.json'
+
+        ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+        config_file = f'{ROOT_DIR[:-3]}config.ini'  # 配置文件的路径
+        self.model_path = get_config_variable(config_file, 'LLM', 'model_path')
+        self.tokens_path = get_config_variable(config_file, 'LLM', 'tokenizer_path')
         self.model = RWKV(model=self.model_path,
                           strategy=self.strategy,
                           tokens_path=self.tokens_path)
