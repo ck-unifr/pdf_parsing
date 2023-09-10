@@ -15,10 +15,69 @@
 
 并且在这个项目使用了[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)对PDF做摘要。
 
-在项目中，有以下几个主要文件：
+在项目中，有以下一个主要文件：
 - src/parser.py：包含了所有 PDF 解析相关代码。
 - src/llm_summarizer.py：包含了大模型摘要相关代码。
 - src/main.py：包含了一些示例代码，展示了如何使用 src/parser.py 中的功能。
+
+## 使用
+具体例子请参考 src/main.py
+
+**初始化**
+首先初始化一个类并讲需要解析的PDF文件路径传入到该类。
+```
+from parser import PDFParser
+
+pdf_path = '/home/data/gpt-4.pdf'
+parser = PDFParser(pdf_path)
+```
+
+**获取文字：标题，章节名称和对应的文字内容**
+```
+import json
+parser.extract_text()
+
+# 指定保存的文件路径
+json_file_path = 'home/text/sections.json'
+with open(json_file_path, 'w') as json_file:
+    json.dump(parser.text.section, json_file)
+```
+
+**获取图片：图片和对应的标题**
+```
+parser.extract_images()
+    images = parser.images
+    for image in images:
+        # 将图像保存为文件
+        image_filename = f"/home/image/image_{image.page_num}_{image.title[:10]}.png"
+        with open(image_filename, "wb") as image_file:
+            logging.info(image.title)
+            logging.info(image.page_num)
+            image_file.write(image.image_data)
+```
+
+**获取表格：表格和对应的标题**
+```
+parser.extract_tables()
+for i, table in enumerate(parser.tables):
+    csv_filename = "/home/table/table_i_{table.page_num}_{table.title[:10]}.csv"
+    table.table_data.to_csv(csv_filename)
+```
+
+**获取参考**
+```
+parser.extract_references()
+with open('/home/reference/references.txt', 'w') as fp:
+    for ref in parser.references:
+        fp.write("%s\n" % ref.ref)
+```
+
+**获取摘要**
+```
+llm_summarizer = LLMSummarizer()
+summary = llm_summarizer.summarize(pdf_path)
+```
+
 
 ## 总结
 由于时间关系目前的PDF解析还存在需要优化的地方。
