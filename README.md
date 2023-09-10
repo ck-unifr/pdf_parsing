@@ -43,7 +43,7 @@ import json
 parser.extract_text()
 
 # 指定保存的文件路径
-json_file_path = 'home/text/sections.json'
+json_file_path = '/home/text/sections.json'
 with open(json_file_path, 'w') as json_file:
     json.dump(parser.text.section, json_file)
 ```
