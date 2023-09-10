@@ -11,13 +11,17 @@ from typing import List
 
 
 class Text:
-    def __init__(self, title: str = None, section: dict = {}, summary: str = None):
+    def __init__(self,
+                 title: str = None,
+                 section: dict = {},
+                 summary: str = None):
         """
         文本类，用于封装提取的文本内容
 
         参数:
         - title: str，文本标题
         - section: dict, key:章节名称 value:章节文字内容
+        - summary: str,  摘要
         """
         self.title = title
         self.section = section
@@ -25,7 +29,10 @@ class Text:
 
 
 class PDFImage:
-    def __init__(self, title: str, image_data: object, page_num: int):
+    def __init__(self,
+                 title: str,
+                 image_data: object,
+                 page_num: int):
         """
         图片类，用于封装提取的图片信息
 
@@ -40,7 +47,10 @@ class PDFImage:
 
 
 class Table:
-    def __init__(self, title: str, table_data: pd.DataFrame, page_num: int):
+    def __init__(self,
+                 title: str,
+                 table_data: pd.DataFrame,
+                 page_num: int):
         """
         表格类，用于封装提取的表格信息
 
@@ -67,8 +77,8 @@ class Reference:
 
 class PDFOutliner:
     """
-    获取给定PDF的所有章节的标题
-    该类对下面的代码做了一些修改
+    该类用于获取给定PDF的所有章节的标题
+    该类对下面的代码做了一些修改，核心算法来自下面仓库
     https://github.com/beaverden/pdftoc/tree/main
     """
 
@@ -152,7 +162,7 @@ class PDFParser:
         - pdf_path: str，PDF 文件的路径
         """
         self.pdf_path = pdf_path
-        self.doc = fitz.open(self.pdf_path)  # fitz.Document
+        self.doc = fitz.open(self.pdf_path)  # PyMuPDF fitz.Document
         self.text = Text()   # text: Text, 文字内容
         self.images = []     # list, 所有图片（PDFImage）
         self.tables = []     # list, 所有表格（Table）
@@ -213,7 +223,6 @@ class PDFParser:
         """
         删除输入文字开头的数字。
         """
-        # 用isdigit()方法检查文字的第一个字符是否是数字
         while text and text[0].isdigit():
             text = text[1:]  # 删除第一个字符
         return text
@@ -222,19 +231,20 @@ class PDFParser:
         """
         提取PDF中的文本内容
         """
-        # 获取标题
+        # 1 获取标题
         self.extract_title()
-        # 获取章节名称
+        # 2 获取章节名称
         outliner = PDFOutliner()
         outliner.create_text_outline(self.pdf_path, 0)
-        # 获取对应章节下的文字内容
+        # 3 获取对应章节下的文字内容
         self.text.section = self.extract_sections_content(
             self.doc, outliner.titles)
         return
 
-    def extract_images(self, fig_caption_start: str = ' Figure'):
+    def extract_images(self, fig_caption_start: str = 'Figure'):
         """
         提取 PDF 中的图片信息: 图片和图片的标题
+        fig_caption_start: str，图片标题开始词
         """
         doc = self.doc
 
@@ -243,7 +253,7 @@ class PDFParser:
             # 提取页面文本块
             blocks = page.get_text('blocks')
             # 通过计算文本块与图片的距离来匹配图片和对应的标题，
-            # 文本块有特定的开始词且距离离图片最近的文本块的文字为当前图片的标题
+            # 文本块有特定的开始词开始且距离（欧氏距离）离图片最近的文本块的文字为当前图片的标题
             for img_index, img in enumerate(page.get_images(full=True)):
                 xref = img[0]
                 base_image = doc.extract_image(xref)
@@ -263,9 +273,10 @@ class PDFParser:
                 image = PDFImage(related_text, image_data, page_num)
                 self.images.append(image)
 
-    def extract_tables(self):
+    def extract_tables(self, tab_caption_start: str = 'Table'):
         """
         提取 PDF 中的表格信息
+        tab_caption_start: str, 表格标题开始词
         """
         doc = self.doc
         for num in range(len(doc)):
@@ -275,7 +286,7 @@ class PDFParser:
             # 提取表格
             tables = page.find_tables()
             # 通过计算文本块与表格的距离来匹配图片和对应的标题，
-            # 文本块有特定的开始词且距离离表格最近的文本块的文字为当前图片的标题
+            # 文本块有特定的开始词且距离（欧氏距离）离表格最近的文本块的文字为当前图片的标题
             for table in tables:
                 x0, y0, x1, y2 = table.bbox
                 df = table.to_pandas()
@@ -283,7 +294,7 @@ class PDFParser:
                 min_dist = float('inf')
                 for block in blocks:
                     block_x0, block_y0, block_x1, block_y1, block_text = block[:5]
-                    if block_text.strip().startswith('Table'):
+                    if block_text.strip().startswith(tab_caption_start):
                         # 计算欧式距离
                         dist = (x0 - block_x0)**2 + (y0 - block_y0)**2
                         if dist < min_dist:

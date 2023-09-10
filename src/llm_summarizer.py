@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # 作者：陈凯
 # 电子邮件：chenkai0210@hotmail.com
@@ -17,6 +16,8 @@ os.environ["RWKV_JIT_ON"] = '1'
 class LLMSummarizer:
     """
     用大模型对PDF进行总结
+    这里用到的大模型是rwkv raven 4
+    https://huggingface.co/BlinkDL/rwkv-4-raven
     """
 
     def __init__(self):
@@ -44,6 +45,7 @@ class LLMSummarizer:
 
     def summarize(self, pdf_path):
         loader = PyPDFLoader(pdf_path)
+        # 获取第一页的前500的单子做摘要
         data = loader.load()[0]
         instruction = data.page_content[:500]  # @param {type:"string"}
         summary = self.chain.run(instruction)
