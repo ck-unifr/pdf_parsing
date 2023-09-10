@@ -11,13 +11,13 @@ from typing import List
 
 
 class Text:
+    """文本类，用于封装提取的文本内容 """
+
     def __init__(self,
                  title: str = None,
                  section: dict = {},
                  summary: str = None):
         """
-        文本类，用于封装提取的文本内容
-
         参数:
         - title: str，文本标题
         - section: dict, key:章节名称 value:章节文字内容
@@ -29,13 +29,13 @@ class Text:
 
 
 class PDFImage:
+    """图片类，用于封装提取的图片信息 """
+
     def __init__(self,
                  title: str,
                  image_data: object,
                  page_num: int):
         """
-        图片类，用于封装提取的图片信息
-
         参数:
         - title: str，图片标题
         - image_data: 图片数据的表示形式，可以是字节流、文件路径等
@@ -47,13 +47,13 @@ class PDFImage:
 
 
 class Table:
+    """表格类，用于封装提取的表格信息 """
+
     def __init__(self,
                  title: str,
                  table_data: pd.DataFrame,
                  page_num: int):
         """
-        表格类，用于封装提取的表格信息
-
         参数:
         - title: str，表格标题
         - table_data: 表格数据，可以是 Pandas DataFrame 等形式
@@ -65,10 +65,10 @@ class Table:
 
 
 class Reference:
+    """参考文献类，用于封装提取的参考文献信息 """
+
     def __init__(self, ref: str):
         """
-        参考文献类，用于封装提取的参考文献信息
-
         参数:
         - ref: str，参考文献
         """
@@ -155,9 +155,10 @@ class PDFOutliner:
 
 
 class PDFParser:
+    """PDF 解析器类，用于提取 PDF 中的文本、图片、表格和参考文献信息 """
+
     def __init__(self, pdf_path: str):
         """
-        PDF 解析器类，用于提取 PDF 中的文本、图片、表格和参考文献信息
         参数:
         - pdf_path: str，PDF 文件的路径
         """

@@ -4,6 +4,7 @@
 # 日期：2023-09
 # 描述：这个脚本实现了基于大模型对PDF做摘要。
 
+from utils import get_config_variable
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import PyPDFLoader
 from langchain.chains import LLMChain
@@ -12,7 +13,6 @@ import os
 os.environ["RWKV_CUDA_ON"] = '1'
 os.environ["RWKV_JIT_ON"] = '1'
 
-from utils import get_config_variable
 
 class LLMSummarizer:
     """
@@ -28,7 +28,8 @@ class LLMSummarizer:
         ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
         config_file = f'{ROOT_DIR[:-3]}config.ini'  # 配置文件的路径
         self.model_path = get_config_variable(config_file, 'LLM', 'model_path')
-        self.tokens_path = get_config_variable(config_file, 'LLM', 'tokenizer_path')
+        self.tokens_path = get_config_variable(
+            config_file, 'LLM', 'tokenizer_path')
         self.model = RWKV(model=self.model_path,
                           strategy=self.strategy,
                           tokens_path=self.tokens_path)
