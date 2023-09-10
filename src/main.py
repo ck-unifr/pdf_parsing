@@ -53,10 +53,12 @@ if __name__ == '__main__':
             image_file.write(image.image_data)
 
     # 4 表格：表格和对应的标题
-    logging.info('== extract text ==')
+    logging.info('== extract table ==')
     parser.extract_tables()
-    for table in parser.tables:
+    for i, table in enumerate(parser.tables):
         logging.info(table.title)
+        csv_filename = f"{ROOT_DIR[:-3]}/temp/table/table_i_{table.page_num}_{table.title[:10]}.csv"
+        table.table_data.to_csv(csv_filename)
 
     # 5 参考文献
     logging.info('== extract references ==')
