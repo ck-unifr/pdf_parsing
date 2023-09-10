@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     logging.info('** pdf parsing **')
     # 1 创建 PDFParser 对象
-    # pdf_path = '/Users/kaichen/workspace/pdf_parsing/pdf_parsing/data/llama2.pdf'
+    # https://cdn.openai.com/papers/gpt-4.pdf
     pdf_path = f'{ROOT_DIR[:-3]}/data/gpt-4.pdf'
     parser = PDFParser(pdf_path)
 
