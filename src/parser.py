@@ -196,22 +196,30 @@ class PDFParser:
         - 一个字典，键是章节名称，值是该章节的文字内容。
         """
         sections_content = {}  # 存储章节名称和内容的字典
+        # 获取所有章节名称
         filtered_section_titles = [PDFParser.remove_leading_digits(
             title).strip() for title in section_titles]
+        # 对于每一个章节名称，遍历所有文字行，如果文字行内包含了该章节的名称则加下去将文字行加入到该章节文字内容中
+        # 如果文字行包含了下一个章节的名称则停止将文字行加入到该章节文字内容中
         for i, section_title in enumerate(filtered_section_titles):
             section_found = False
             section_content = ""
-
+            scan_page = True
             for page_num in range(len(doc)):
-                page = doc.load_page(page_num)
+                page = doc[page_num]
                 page_text = page.get_text()
-
                 for line in page_text.split('\n'):
+                    # 如果找到了下一章的标题则跳出
+                    if i+1 < len(filtered_section_titles) and filtered_section_titles[i+1].lower() in line.lower():
+                        scan_page = False
+                        break
                     if section_title.lower() in line.lower():
                         section_found = True
                     elif section_found:
                         # 如果找到了目标标题，开始获取章节内容
                         section_content += line + "\n"
+                if not scan_page:
+                    break
 
             if section_found:
                 sections_content[section_titles[i]] = section_content
@@ -254,7 +262,7 @@ class PDFParser:
             blocks = page.get_text('blocks')
             # 通过计算文本块与图片的距离来匹配图片和对应的标题，
             # 文本块有特定的开始词开始且距离（欧氏距离）离图片最近的文本块的文字为当前图片的标题
-            for img_index, img in enumerate(page.get_images(full=True)):
+            for img in page.get_images(full=True):
                 xref = img[0]
                 base_image = doc.extract_image(xref)
                 x0, y0, x1, y2 = page.get_image_rects(xref)[0]
