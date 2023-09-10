@@ -102,7 +102,7 @@ tokenizer_path=/data/model/rwkv_model/20B_tokenizer.json
 
 ## 总结
 由于时间关系目前的PDF解析还存在需要优化的地方。
-- 表格解析：开发中发现表格解析很有挑战。目前使用的库是[PyMuPDF](https://pymupdf.readthedocs.io/en/latest/)，还是有不少表格提错的地方，计划尝试其他多模态的框架，例如 [LayoutLM](https://huggingface.co/docs/transformers/model_doc/layoutlm)。
+- 表格解析：开发中发现表格解析很有挑战。目前使用的库是[PyMuPDF](https://pymupdf.readthedocs.io/en/latest/)，还是有不少表格提错的地方，计划尝试其他多模态的框架，例如 [LayoutLM](https://huggingface.co/docs/transformers/model_doc/layoutlm) [table-transformer](https://github.com/microsoft/table-transformer) [PaddleOCR](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/table/README.md)。
 - 图表解析：可以尝试一些基于大模型的库可来解析图表，例如 [DePlot](https://huggingface.co/docs/transformers/main/model_doc/deplot)。
 - 参考目前只是把每一条参考都输出，没有对每一天参考做结构化（时间，作者，标题），参考条目的结构化是接下去的一个工作，可以尝试使用大模型做这个结构化的工作。
 - PDF结构化后，可以用大模型对结构化好的部位做问答，为了让问答更有效率我们需要将结构化的内容做切分然后存入向量库。
