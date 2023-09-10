@@ -46,14 +46,14 @@ with open(json_file_path, 'w') as json_file:
 **获取图片：图片和对应的标题**
 ```
 parser.extract_images()
-    images = parser.images
-    for image in images:
-        # 将图像保存为文件
-        image_filename = f"/home/image/image_{image.page_num}_{image.title[:10]}.png"
-        with open(image_filename, "wb") as image_file:
-            logging.info(image.title)
-            logging.info(image.page_num)
-            image_file.write(image.image_data)
+images = parser.images
+for image in images:
+    # 将图像保存为文件
+    image_filename = f"/home/image/image_{image.page_num}_{image.title[:10]}.png"
+    with open(image_filename, "wb") as image_file:
+        logging.info(image.title)
+        logging.info(image.page_num)
+        image_file.write(image.image_data)
 ```
 
 **获取表格：表格和对应的标题**
