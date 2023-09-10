@@ -15,7 +15,7 @@
 
 并且在这个项目使用了[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)对PDF做摘要。
 
-在项目中，有以下一个主要文件：
+在项目中，有以下几个主要文件：
 - src/parser.py：包含了所有 PDF 解析相关代码。
 - src/llm_summarizer.py：包含了大模型摘要相关代码。
 - src/main.py：包含了一些示例代码，展示了如何使用 src/parser.py 中的功能。
