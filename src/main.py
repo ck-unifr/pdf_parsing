@@ -7,9 +7,10 @@
 import os
 import logging
 import json
-from parser import PDFParser
+from pdf_parser import PDFParser
 from llm_summarizer import LLMSummarizer
-
+from llm_extractor import LLMExtractor
+from tqdm import tqdm
 
 if __name__ == '__main__':
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -66,7 +67,7 @@ if __name__ == '__main__':
     # for ref in parser.references:
     #     print(ref.ref)
     logging.info(len(parser.references))
-    with open(f'{ROOT_DIR[:-3]}/temp/txt/references.txt', 'w') as fp:
+    with open(f'{ROOT_DIR[:-3]}/temp/reference/references.txt', 'w') as fp:
         for ref in parser.references:
             # write each item on a new line
             fp.write("%s\n" % ref.ref)
@@ -76,3 +77,16 @@ if __name__ == '__main__':
     llm_summarizer = LLMSummarizer()
     parser.text.summary = llm_summarizer.summarize(pdf_path)
     logging.info(parser.text.summary)
+
+    # 7 用大模型将参考文献结构化成作者，标题，日期
+    logging.info('== extract info (author, title, year) from references ==')
+    llm_extractor = LLMExtractor()
+    extracted_ref = 0
+    for i, ref in enumerate(tqdm(parser.references)):
+        json_ref = llm_extractor.extract_reference(ref)
+        if json_ref and len(json_ref) > 0:
+            with open(f'{ROOT_DIR[:-3]}/temp/reference/{i}.json', 'w') as outfile:
+                json.dump(json_ref, outfile)
+                extracted_ref += 1
+                if extracted_ref > 5:
+                    break
