@@ -1,5 +1,5 @@
 # PDF解析
-![Python](https://img.shields.io/badge/Python-3.9-blue) ![PyPDF2](https://img.shields.io/badge/PyPDF2-3.0.1-blue) ![PyMuPDF](https://img.shields.io/badge/PyMuPDF-1.23.3-blue)  ![Langchain](https://img.shields.io/badge/Langchain-0.0.285-blue)  ![Rwkv](https://img.shields.io/badge/RWKV-0.8.12-blue) ![ChatGLM2](https://img.shields.io/badge/ChatGLM-2-blue) ![Pandas](https://img.shields.io/badge/Pandas-2.1.0-blue) ![Ninja](https://img.shields.io/badge/Ninja-1.11.1-blue)
+![Python](https://img.shields.io/badge/Python-3.9-blue) ![PyPDF2](https://img.shields.io/badge/PyPDF2-3.0.1-blue) ![PyMuPDF](https://img.shields.io/badge/PyMuPDF-1.23.3-blue)  ![Langchain](https://img.shields.io/badge/Langchain-0.0.285-blue)  ![Rwkv](https://img.shields.io/badge/RWKV-0.8.12-blue) ![ChatGLM2](https://img.shields.io/badge/ChatGLM-2-blue) ![Pandas](https://img.shields.io/badge/Pandas-2.1.0-blue) ![Ninja](https://img.shields.io/badge/Ninja-1.11.1-blue) ![Streamlit](https://img.shields.io/badge/Streamlit-1.26.0-blue)
 
 ## 介绍
 
@@ -20,7 +20,7 @@
 
 在这个项目中还有实现了一个对PDF问答的例子。
 
-在项目中，有以下几个主要文件：
+以下是这个项目的几个主要文件：
 - ```src/pdf_parser.py```：包含了所有 PDF 解析相关代码。
 - ```src/llm_summarizer.py```：包含了大模型摘要相关代码。
 - ```src/llm_extractor.py```：包含了大模型对参考文献做信息抽取相关代码。
@@ -29,9 +29,12 @@
 - ```src/app.py```: 包含了一个用```streamlit```和```langchain```做PDF问答的例子。
 - ```config.ini```：包含了大模型文件路径和相关的tokenizer文件路径。
 
+
 ## 使用
 
-具体例子请参考 ```src/main.py```
+关于PDF解析的具体例子请参考 ```src/main.py```。
+关于PDF问答请参考```src/app.py```。
+
 
 **初始化**
 
