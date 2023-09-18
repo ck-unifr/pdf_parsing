@@ -18,12 +18,15 @@
 - 是用了[ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B)对参考文献做信息抽取。
 将参考文献结构化成字典的格式，字典包含了”作者“，”标题“，”年份“。
 
+在这个项目中还有实现了一个对PDF问答的例子。
+
 在项目中，有以下几个主要文件：
 - ```src/pdf_parser.py```：包含了所有 PDF 解析相关代码。
 - ```src/llm_summarizer.py```：包含了大模型摘要相关代码。
 - ```src/llm_extractor.py```：包含了大模型对参考文献做信息抽取相关代码。
 - ```src/main.py```：包含了一些示例代码，展示了如何使用 ```src/pdf_parser.py``` 中的功能。
 - ```src/utils.py```: 包含了一些工具函数。
+- ```src/app.py```: 包含了一个用```streamlit```和```langchain```做PDF问答的例子。
 - ```config.ini```：包含了大模型文件路径和相关的tokenizer文件路径。
 
 ## 使用
@@ -111,6 +114,12 @@ from llm_summarizer import LLMSummarizer
 llm_summarizer = LLMSummarizer()
 summary = llm_summarizer.summarize(pdf_path)
 ```
+
+**运行PDF问答**
+```
+streamlit run app.py --server.fileWatcherType none
+```
+
 
 这个项目用到的是大模型是[RWKV-Raven-7B](https://huggingface.co/BlinkDL/rwkv-4-raven)，
 [ChatGLM2-6B](https://github.com/THUDM/ChatGLM2-6B)
