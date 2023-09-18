@@ -1,32 +1,23 @@
+import os
+from typing import Any, List, Mapping, Optional
 import streamlit as st
-from dotenv import load_dotenv
+from streamlit_extras.add_vertical_space import add_vertical_space
 import pickle
 from PyPDF2 import PdfReader
-from streamlit_extras.add_vertical_space import add_vertical_space
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.embeddings import HuggingFaceEmbeddings, HuggingFaceInstructEmbeddings
+from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
-from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
-import os
-
-from typing import Any, List, Mapping, Optional
-
 from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
-
-from transformers import AutoTokenizer, AutoModel
-from utils import get_config_variable
-
-from utils import get_config_variable
 from langchain.prompts import PromptTemplate
 from langchain.document_loaders import PyPDFLoader
 from langchain.chains import LLMChain
-from transformers import AutoTokenizer, AutoModel, AutoConfig
 from langchain.llms import RWKV
-import os
+from transformers import AutoTokenizer, AutoModel, AutoConfig
+from utils import get_config_variable
+
 
 os.environ["RWKV_CUDA_ON"] = '1'
 os.environ["RWKV_JIT_ON"] = '1'
