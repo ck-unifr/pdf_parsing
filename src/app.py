@@ -9,11 +9,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.vectorstores import FAISS
 from langchain.chains.question_answering import load_qa_chain
 from langchain.callbacks import get_openai_callback
-from langchain.callbacks.manager import CallbackManagerForLLMRun
 from langchain.llms.base import LLM
-from langchain.prompts import PromptTemplate
-from langchain.document_loaders import PyPDFLoader
-from langchain.chains import LLMChain
 from langchain.llms import RWKV
 from transformers import AutoTokenizer, AutoModel, AutoConfig
 from utils import get_config_variable
@@ -22,10 +18,13 @@ from utils import get_config_variable
 os.environ["RWKV_CUDA_ON"] = '1'
 os.environ["RWKV_JIT_ON"] = '1'
 
+# 启动streamlit
+# streamlit run app.py --server.fileWatcherType none
+
 
 class GLM(LLM):
     max_token: int = 2048
-    temperature: float = 0.8
+    temperature: float = 0.1
     top_p = 0.9
     tokenizer: object = None
     model: object = None
@@ -70,7 +69,8 @@ with st.sidebar:
     st.write('Made by Kai Chen')
 
 
-@st.experimental_singleton
+# @st.experimental_singleton
+@st.cache_resource
 def load_llm_chatglm():
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     config_file = f'{ROOT_DIR[:-3]}config.ini'  # 配置文件的路径
@@ -80,7 +80,8 @@ def load_llm_chatglm():
     return llm
 
 
-@st.experimental_singleton
+# @st.experimental_singleton
+@st.cache_resource
 def load_llm_rwkv():
     print('load llm')
     strategy = "cuda fp16i8 *20 -> cuda fp16"
