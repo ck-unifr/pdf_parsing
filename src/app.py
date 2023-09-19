@@ -23,9 +23,10 @@ os.environ["RWKV_JIT_ON"] = '1'
 
 
 class GLM(LLM):
+    """自定义大模型"""
     max_token: int = 2048
     temperature: float = 0.1
-    top_p = 0.9
+    top_p: float = 0.9
     tokenizer: object = None
     model: object = None
     history_len: int = 1024
@@ -72,6 +73,7 @@ with st.sidebar:
 # @st.experimental_singleton
 @st.cache_resource
 def load_llm_chatglm():
+    """加载大模型"""
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     config_file = f'{ROOT_DIR[:-3]}config.ini'  # 配置文件的路径
     model_path = get_config_variable(config_file, 'LLM', 'chatglm2_6b_path')
@@ -80,10 +82,9 @@ def load_llm_chatglm():
     return llm
 
 
-# @st.experimental_singleton
 @st.cache_resource
 def load_llm_rwkv():
-    print('load llm')
+    """加载大模型"""
     strategy = "cuda fp16i8 *20 -> cuda fp16"
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     config_file = f'{ROOT_DIR[:-3]}config.ini'  # 配置文件的路径
