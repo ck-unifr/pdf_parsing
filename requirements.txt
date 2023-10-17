@@ -10,3 +10,4 @@ cpm_kernels==1.0.11
 torch==1.13.1
 streamlit==1.26.0
 streamlit-extras==0.3.2
+sentence-transformers==2.2.2
